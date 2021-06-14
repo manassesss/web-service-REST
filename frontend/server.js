@@ -1,18 +1,17 @@
 const http = require('http')
-const emails = require('./data/emails')
+const {getEmails, getEmailbyId} = require('./controllers/emailController')
 
 const server = http.createServer((req, res) => {
     if (req.url === '/api/emails' && req.method === 'GET'){
-        res.writeHead(200 , {'Constent-Type': 'application/json'})
-        res.end(JSON.stringify(emails))
-    }else if(req.url === '/api/users' && req.method === 'GET'){
-        res.writeHead(404 , {'Constent-Type': 'application/json'})
-        res.end(JSON.stringify({message :'Route Not Found'}))
-    }else {
+        getEmails(req, res)
+    }else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method === 'GET'){
+        const id = req.url.split('/')
+        getEmailbyId(req. res, id)
+       
+    } else {
         res.writeHead(404 , {'Constent-Type': 'application/json'})
         res.end(JSON.stringify({message :'Route Not Found'}))
     }
-    
 })
 const PORT = process.env.PORT || 1998
 
