@@ -1,5 +1,54 @@
 const Email = require('../models/emailModel')
 
+async function sendEmail(req, res) {
+    try {
+        let body = ''
+        req.on('data', (chunk) => {
+            body += chunk.toString()
+        })
+        req.on('end', async() => {
+            const {sender, receiver, subject, content} = JSON.parse(body);
+
+            delete require.cache[require.resolve('./dados/emails.json')];
+            var messages_array = require('./dados/emails.json');
+
+            var messages = messages_array.messages
+            message = {
+                id: messages.length,
+                sender,
+                receiver,
+                subject,
+                content,
+                forward: false
+            }
+            const sended = await Mensagens.send(message);
+            res.writeHead(201, {'Content-Type': 'application/json'})
+            console.log(sended)
+            return res.end(JSON.stringify(sended));
+        })
+    }catch(error){
+        console.log(error)
+    }
+}
+
+async function deleteEmail(req, res) {
+    const Messages = require('./models/emailModel');
+    try {
+        let body = ''
+        req.on('data', (chunk) => {
+            body += chunk.toString()
+        })
+        req.on('end', async() => {
+            const {id} = JSON.parse(body);
+            const deleted = await Mensagens.apagar(id);
+            res.writeHead(201, {'Content-Type': 'application/json'})
+            console.log(deleted)
+            return res.end(JSON.stringify(deleted));
+        })
+    }catch(error){
+        console.log(error)
+    }
+}
 
 async function getEmails(req, res){
 
@@ -30,7 +79,7 @@ async function getEmailbyId(req, res,id){
     }
 }
 
+
 module.exports = {
-    getEmails
-    getEmailbyId
+    getEmails, getEmailbyId, sendEmail, deleteEmail
 }
