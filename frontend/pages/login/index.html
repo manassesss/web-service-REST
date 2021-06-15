@@ -1,0 +1,33 @@
+<html>
+    <h1>Login:</h1>
+    <p>Insert your user or a user to resister</h3>
+    <br>
+    <input class="input" id="input" type="text" placeholder="User">
+    <button id="btn" type="submit">Login/Register</button>
+    <div></div>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $(document).on('click','#btn', function(){
+            var input = $('#input').val();
+
+            if(input != ''){
+                var data =  JSON.stringify({
+                    name: input
+                })
+                $.ajax({
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                url: "http://localhost:1998/login"
+            }).done( function(res) {
+                console.log(res);
+                $('div').append(res.name);
+                window.location.href = `./pages/emails/emailBox.html?user=${res.nome}`;
+            });
+            }
+        });
+    });
+    </script>
+</html>

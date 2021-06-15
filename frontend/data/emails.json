@@ -1,9 +1,10 @@
 [{
-"id":"7d7a8928-0788-4a51-b9b9-2c80d779bfa9",
-"sender":"admin@admin.com",
-"msg":"Ei, Tchouze. Me empresta uma ficha do RU. X-X",
-"receiver":"rem@rem.com"},
-{"id":"48e60984-800c-40b5-a400-d9c8c14c7ae8",
-"sender":"rem@rem.com",
-"msg":"Sheeesh!! man, só tenho uma. Desculpa. ",
-"receiver":"admin@admin.com"}]
+    "id":"00",
+    "sender":"Beyonce",
+    "msg":"You wake up, flawless\nPost up, flawless\nRidin' round in it, flawless\nFlossin on that, flawless\nThis diamond, flawless\nMy diamond, flawless\nThis rock, flawless\nMy rock, flawless\nI woke up like this\nI woke up like this\nWe flawless, ladies tell 'em",
+    "receiver":"Rihanna"},
+{
+    "id":"01",
+    "sender":"Rihanna",
+    "msg":"'Cause I didn't mean to hurt him\nCoulda been somebody's son\nAnd I took his heart when\nI pulled out that gun\nRum bum bum bum, rum bum bum bum, rum bum bum bum\nMan Down!",
+    "receiver":"Beyonce"}]

@@ -1,0 +1,105 @@
+<html>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <style>
+
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+    </style>
+    <head>
+        <div class="topnav">
+            <a class="active">Email Box</a>
+            <a id="send">Send Email</a>
+            <a id="sended">Sent Emails</a>
+            <a href="../index.html">Logout</a>
+          </div>
+        <br>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                function getParameterByName(name, url = window.location.href) {
+                    name = name.replace(/[\[\]]/g, '\\$&');
+                    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                        results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+            var user = getParameterByName("user");
+                $(document).on('click','#send', function(){
+                    window.location.href = `./enviar.html?user=${user}`;
+                });
+                $(document).on('click','#sended', function(){
+                    window.location.href = `./enviados.html?user=${user}`;
+                });
+            });
+            </script>
+    
+    </head>
+    <body>
+    <div id="Titulo"><h1>Email Box</h1></div>
+    <div id="emails"></div>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            function getParameterByName(name, url = window.location.href) {
+                    name = name.replace(/[\[\]]/g, '\\$&');
+                    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                        results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+            var usuario = getParameterByName("user");
+            
+                    var data =  JSON.stringify({
+                        usuario,
+                    })
+                    $.ajax({
+                    type: "POST",
+                    url: "http://localhost:1998/email",
+                    data: data,
+                    dataType: 'json',
+                }).done( function(res) {
+                    console.log(res);
+                    res.messages.reverse().forEach(message => {
+                        if(message.encaminhado){
+                            document.getElementById("emails").innerHTML += (`<div id=card"><li>Forward</li>` + 
+                                `<a href="./mensagem.html?user=${usuario}&&id=${message.id}">${message.subject}</a>
+                                <p>${message.content}</p><p>Enviado por: ${message.receiver}</p><hr></div>`);
+                        }else{
+                            document.getElementById("emails").innerHTML += (`<div id="card">` + 
+                                `<a href="./mensagem.html?user=${user}&&id=${message.id}">${message.subject}</a>
+                                <p>${message.content}</p><p>Enviado por: ${message.receiver}</p><hr></div>`);
+                        }
+                    });
+                });
+        });
+        </script>
+    </body>
+    
+
+</html>

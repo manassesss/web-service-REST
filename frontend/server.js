@@ -1,5 +1,5 @@
 const http = require('http')
-const {getEmails, getEmailbyId, deleteEmail, sendEmail} = require('./controllers/emailController')
+const {getEmails, getEmailbyId, getEmailsAll, deleteEmail, sendEmail, getSendtEmails} = require('./controllers/emailController')
 const {login} = require('./controllers/userController')
 
 const server = http.createServer((req, res) => {
@@ -9,11 +9,15 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Headers', "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
     if (req.url === '/login' && req.method === 'POST') {
-        api.Login(req, res);
+        login(req, res);
     }else if(req.url === '/send' && req.method === 'POST') {
-        api.sendEmail(req, res);
+        sendEmail(req, res);
+    }else if(req.url === '/enviadas' && req.method === 'GET') {
+        api.getSendtEmails(req, res);
+    }else if(req.url === '/emails' && req.method === 'GET') {
+        getEmails(req, res);
     }else if(req.url === '/delete' && req.method === 'DELETE') {
-        api.Delete(req, res);
+        deleteEmail(req, res);
     }else{
         error = {
             message: '404 Page not found'

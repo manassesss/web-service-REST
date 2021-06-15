@@ -1,3 +1,5 @@
+const Users = require('../models/userModel')
+
 async function login(req, res) {
     try {
         let body = ''

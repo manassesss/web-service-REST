@@ -2,8 +2,8 @@ const emails = require('../data/emails')
 var fs = require('fs');
 
 const sendEmail = ({id, sender, receiver, subject, content, forward}) => {
-    delete require.cache[require.resolve("../dados/users.json")];
-    var users_array = require("../dados/users.json");
+    delete require.cache[require.resolve("../data/users.json")];
+    var users_array = require("../data/users.json");
     var users = users_array.users
     
     var obj = {
@@ -12,14 +12,14 @@ const sendEmail = ({id, sender, receiver, subject, content, forward}) => {
 
      if(users.includes(sender) && users.includes(receiver)){
         
-        const data = fs.readFileSync('./dados/emails.json', 'utf8');
+        const data = fs.readFileSync('./data/emails.json', 'utf8');
             
             obj = JSON.parse(data);
             
             obj.messages.push({id, sender, receiver, subject, content, forward});
             json = JSON.stringify(obj);
             
-            fs.writeFileSync('./dados/emails.json', json, 'utf8');
+            fs.writeFileSync('./data/emails.json', json, 'utf8');
             return {id, sender, receiver, subject, content, forward};
             
 
@@ -33,11 +33,11 @@ const deleteEmail = (id) => {
         messages: []
      };
 
-    const data = fs.readFileSync('./dados/emails.json', 'utf8');
+    const data = fs.readFileSync('./data/emails.json', 'utf8');
         
     obj = JSON.parse(data);
-    delete require.cache[require.resolve('../dados/emails.json')];
-    var messages_array = require('../dados/emails.json');
+    delete require.cache[require.resolve('../data/emails.json')];
+    var messages_array = require('../data/emails.json');
     var messages = messages_array.messages;
     for(i=0; i < obj.messages.length; i++){
         if(messages[i].id == id){
@@ -46,9 +46,51 @@ const deleteEmail = (id) => {
     }
     json = JSON.stringify(obj);
     
-    fs.writeFileSync('./dados/emails.json', json, 'utf8')
+    fs.writeFileSync('./data/emails.json', json, 'utf8')
     return {message: 'Message was deleted!'};
 }
+const forwardEmail = ({id, sender, receiver, forward}) => {
+    var obj = {
+        messages: []
+     };
+
+    const data = fs.readFileSync('./data/email.json', 'utf8');
+    delete require.cache[require.resolve('../data/email.json')];
+    var messages_array = require('../data/email.json');
+    var messages = messages_array.messages;
+    obj = JSON.parse(data);
+    for(i=0; i < obj.messages.length; i++){
+        if(messages[i].id == id){
+            var subject = messages[i].subject;
+            var content = messages[i].content;
+        }
+    }
+    id = obj.messages.length;
+    obj.messages.push({id, sender, receiver, subject, content, forward});
+    json = JSON.stringify(obj);
+    
+    fs.writeFileSync('./data/email.json', json, 'utf8');
+    return {id, sender, receiver, subject, content, forward};
+    
+}
+
+const getSentEmails = (user) => {
+    var obj = {
+        messages: []
+     };
+    console.log(user);
+    delete require.cache[require.resolve('../dados/messages.json')];
+    var messages_array = require('../dados/messages.json');
+    var messages = messages_array.messages
+    for(i=0; i < messages.length; i++){
+        if(messages[i].receiver == user){
+            obj.messages.push(messages[i])
+        }
+    }
+    return obj
+}
+
+
 
 
 function getEmails() {
@@ -66,5 +108,5 @@ function getEmailbyId(id) {
 }
 
 module.exports = {
-    getEmails , getEmailbyId, sendEmail, deleteEmail
+    getEmails , getEmailbyId, sendEmail, deleteEmail, forwardEmail, getSentEmails
 }
