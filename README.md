@@ -1,10 +1,10 @@
 # :envelope: Simplified Mail Server using REST model
 This repository contains a application using WebServices in REST model with the following functions:
 
-- [ ] Send Message 
-- [ ] List messages 
+- [x] Send Message 
+- [x] List messages 
 - [ ] Delete messages
-- [ ] Open message 
+- [x] Open message 
 - [ ] Forward message
 - [ ] Reply Message 
 
