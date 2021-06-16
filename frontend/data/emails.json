@@ -1,10 +1,1 @@
-[{
-    "id":"00",
-    "sender":"Beyonce",
-    "msg":"You wake up, flawless\nPost up, flawless\nRidin' round in it, flawless\nFlossin on that, flawless\nThis diamond, flawless\nMy diamond, flawless\nThis rock, flawless\nMy rock, flawless\nI woke up like this\nI woke up like this\nWe flawless, ladies tell 'em",
-    "receiver":"Rihanna"},
-{
-    "id":"01",
-    "sender":"Rihanna",
-    "msg":"'Cause I didn't mean to hurt him\nCoulda been somebody's son\nAnd I took his heart when\nI pulled out that gun\nRum bum bum bum, rum bum bum bum, rum bum bum bum\nMan Down!",
-    "receiver":"Beyonce"}]
+[{"id":0,"sender":"Beyonce","subject":"Flawless","content":"You wake up, flawless Post up, flawless Ridin' round in it, flawless Flossin on that, flawless This diamond, flawless My diamond, flawless This rock, flawless My rock, flawless I woke up like this I woke up like this We flawless, ladies tell 'em","receiver":"Rihanna"},{"id":1 ,"sender":"Rihanna","subject":"Man Down","content":"'Cause I didn't mean to hurt him Coulda been somebody's son And I took his heart when I pulled out that gun Rum bum bum bum, rum bum bum bum, rum bum bum bum Man Down!","receiver":"Beyonce"},{"id":2,"sender":"Beyonce","receiver":"Rihanna","subject":"All night","content":"Found the truth beneath your lies And true love never has to hide","forward":false}]

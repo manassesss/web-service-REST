@@ -24,7 +24,7 @@
             }).done( function(res) {
                 console.log(res);
                 $('div').append(res.name);
-                window.location.href = `./pages/emails/emailBox.html?user=${res.nome}`;
+                window.location.href = `../emails/emailBox.html?user=${res.name}`;
             });
             }
         });

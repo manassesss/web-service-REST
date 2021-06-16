@@ -7,16 +7,15 @@ const sendEmail = ({id, sender, receiver, subject, content, forward}) => {
     var users = users_array.users
     
     var obj = {
-        messages: []
      };
-
+     console.log(receiver)
      if(users.includes(sender) && users.includes(receiver)){
         
         const data = fs.readFileSync('./data/emails.json', 'utf8');
             
             obj = JSON.parse(data);
             
-            obj.messages.push({id, sender, receiver, subject, content, forward});
+            obj.push({id, sender, receiver, subject, content, forward});
             json = JSON.stringify(obj);
             
             fs.writeFileSync('./data/emails.json', json, 'utf8');
@@ -73,14 +72,28 @@ const forwardEmail = ({id, sender, receiver, forward}) => {
     return {id, sender, receiver, subject, content, forward};
     
 }
+const getReceived = (user) => {
+    var obj = {
+        messages: []
+     };
+    console.log(user);
+    delete require.cache[require.resolve('../data/emails.json')];
+    var messages_array = require('../data/emails.json');
+    for(i=0; i < messages_array.length; i++){
+        if(messages_array[i].receiver == user){
+            obj.messages.push(messages_array[i])
+        }
+    }
+    return obj.messages
+}
 
 const getSentEmails = (user) => {
     var obj = {
         messages: []
      };
     console.log(user);
-    delete require.cache[require.resolve('../dados/messages.json')];
-    var messages_array = require('../dados/messages.json');
+    delete require.cache[require.resolve('../data/email.json')];
+    var messages_array = require('../data/email.json');
     var messages = messages_array.messages
     for(i=0; i < messages.length; i++){
         if(messages[i].receiver == user){
@@ -90,7 +103,25 @@ const getSentEmails = (user) => {
     return obj
 }
 
+const getMensagem = (id) => {
 
+    const data = fs.readFileSync('./data/emails.json', 'utf8');
+    delete require.cache[require.resolve('../data/emails.json')];
+    var messages_array = require('../data/emails.json');
+    var messages = messages_array;
+    obj = JSON.parse(data);
+    for(i=0; i < obj.messages.length; i++){
+        if(messages[i].id == id){
+            var sender = messages[i].sender;
+            var receiver = messages[i].receiver;
+            var subject = messages[i].subject;
+            var content = messages[i].content;
+            var forward = messages[i].forward;
+        }
+    }
+    return {id, sender, receiver, subject, content, forward};
+    
+}
 
 
 function getEmails() {
@@ -108,5 +139,5 @@ function getEmailbyId(id) {
 }
 
 module.exports = {
-    getEmails , getEmailbyId, sendEmail, deleteEmail, forwardEmail, getSentEmails
+    getEmails , getEmailbyId, sendEmail, deleteEmail, forwardEmail, getSentEmails, getReceived
 }

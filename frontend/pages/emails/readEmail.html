@@ -27,7 +27,7 @@
 }
 
     </style>
-    <head>
+     <head>
         <div class="topnav">
             <a class="active">Received Emails</a>
             <a id="send">Write an Email</a>
@@ -44,17 +44,22 @@
                     if (!results[2]) return '';
                     return decodeURIComponent(results[2].replace(/\+/g, ' '));
             }
-            var user = getParameterByName("user");
+            var usuario = getParameterByName("user");
+                $(document).on('click','#emailBox', function(){
+                    window.location.href = `./emailBox.html?user=${usuario}`;
+                });
                 $(document).on('click','#send', function(){
-                    window.location.href = `./sendEmail.html?user=${user}`;
+                    window.location.href = `./sendEmail.html?user=${usuario}`;
                 });
             });
             </script>
     
     </head>
     <body>
-    <div id="Titulo"><h1>Email Box</h1></div>
-    <div id="emails"></div>
+    <div id="Titulo"><h1>Email: </h1></div>
+    <div id="email"></div>
+    <div id="resp-msg">
+    </div>
     
     <script type="text/javascript">
         $(document).ready(function(){
@@ -66,29 +71,30 @@
                     if (!results[2]) return '';
                     return decodeURIComponent(results[2].replace(/\+/g, ' '));
             }
-            var user = getParameterByName("user");
-            
+            var id = getParameterByName("id");
+            var usuario = getParameterByName("user");
+
                     var data =  JSON.stringify({
-                        user,
+                        id,
                     })
                     $.ajax({
                     type: "POST",
+                    url: "http://localhost:1998/readEmail",
                     data: data,
-                    dataType: "json",
-                    url: "http://localhost:1998/emails",
+                    dataType: 'json',
                 }).done( function(res) {
-                    //-var messages = JSON.parse(res)
-                    var messages = res
-                    console.log (messages);
-                    messages.reverse().forEach(message => {
-                            document.getElementById("emails").innerHTML += (`<div id="card">` + 
-                                `<a href="./readEmail.html?user=${user}&&id=${message.id}">${message.subject}</a>
-                                <p>${message.content}</p><p>sent by: ${message.receiver}</p><hr></div>`);
-                    });
-                });
+                    console.log(res);
+                    var message = res;
+                        document.getElementById("email").innerHTML += (`<div id="card">` + 
+                            `<h3>${message.subject}</h3><p>${message.content}</p><p>Enviado por: ${message.sender}</p><hr></div>`);
+
+
+                    })
         });
-        </script>
-    </body>
+
+            
+    </script>
+</body>
     
 
 </html>

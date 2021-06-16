@@ -9,10 +9,10 @@ async function sendEmail(req, res) {
         req.on('end', async() => {
             const {sender, receiver, subject, content} = JSON.parse(body);
 
-            delete require.cache[require.resolve('./data/emails.json')];
-            var messages_array = require('./data/emails.json');
+            delete require.cache[require.resolve('../data/emails.json')];
+            var messages_array = require('../data/emails.json');
 
-            var messages = messages_array.messages
+            var messages = messages_array
             message = {
                 id: messages.length,
                 sender,
@@ -110,7 +110,42 @@ async function getEmailsAll(req, res) {
     }
 }
 
+async function getReceived(req, res) {
+    try {
+        let body = ''
+        req.on('data', (chunk) => {
+            body += chunk.toString()
+        })
+        req.on('end', async() => {
+            const {user} = JSON.parse(body);
+            const received = await Email.getReceived(user);
+            res.writeHead(201, {'Content-Type': 'application/json'})
+            console.log(received)
+            return res.end(JSON.stringify(received));
+        })
+    }catch(error){
+        console.log(error)
+    }
+}
 
+async function readEmail(req, res) {
+    const Emails = require('./models/emailModel');
+    try {
+        let body = ''
+        req.on('data', (chunk) => {
+            body += chunk.toString()
+        })
+        req.on('end', async() => {
+            const {id} = JSON.parse(body);
+            const email = await Emails.getMensagem(id);
+            res.writeHead(201, {'Content-Type': 'application/json'})
+            console.log(email)
+            return res.end(JSON.stringify(email));
+        })
+    }catch(error){
+        console.log(error)
+    }
+}
 
 async function getEmails(req, res){
 
@@ -142,5 +177,5 @@ async function getEmailbyId(req, res,id){
 
 
 module.exports = {
-    getEmails, getEmailbyId, sendEmail, deleteEmail, getEmailsAll, forwardEmail, getSentEmails
+    getEmails, getEmailbyId, sendEmail, deleteEmail, getEmailsAll, forwardEmail, getSentEmails, getReceived, readEmail
 }

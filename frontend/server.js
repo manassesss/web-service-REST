@@ -1,6 +1,7 @@
 const http = require('http')
-const {getEmails, getEmailbyId, getEmailsAll, deleteEmail, sendEmail, getSendtEmails} = require('./controllers/emailController')
-const {login} = require('./controllers/userController')
+const {deleteEmail, sendEmail, getReceived, readEmail} = require('./controllers/emailController')
+const {login} = require('./controllers/userController');
+
 
 const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,12 +13,14 @@ const server = http.createServer((req, res) => {
         login(req, res);
     }else if(req.url === '/send' && req.method === 'POST') {
         sendEmail(req, res);
-    }else if(req.url === '/enviadas' && req.method === 'GET') {
+    }else if(req.url === '/received' && req.method === 'GET') {
         api.getSendtEmails(req, res);
-    }else if(req.url === '/emails' && req.method === 'GET') {
-        getEmails(req, res);
+    }else if(req.url === '/emails' && req.method === 'POST') {
+        getReceived(req, res);
     }else if(req.url === '/delete' && req.method === 'DELETE') {
         deleteEmail(req, res);
+    }else if(req.url === '/readEmail' && req.method === 'POST') {
+        readEmail(req, res);
     }else{
         error = {
             message: '404 Page not found'

@@ -1,0 +1,111 @@
+<html>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <style>
+
+.topnav {
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+
+  color: black;
+}
+
+    </style>
+    <head>
+        <div class="topnav">
+            <a class="active">Received Emails</a>
+            <a id="send">Write an Email</a>
+            <a href="../index.html">Logout</a>
+          </div>
+        <br>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                function getParameterByName(name, url = window.location.href) {
+                    name = name.replace(/[\[\]]/g, '\\$&');
+                    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                        results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+            var usuario = getParameterByName("user");
+            
+                $(document).on('click','#emailBox', function(){
+                    window.location.href = `./emailBox.html?user=${usuario}`;
+                });
+            });
+            </script>
+    
+    </head>
+    <body>
+        <form>
+            <label for="whither">Send to:</label><br>
+            <input type="text" id="receiver"><br><br>
+            <label for="fname">Subject:</label><br>
+            <input type="text" id="subject"><br><br>
+            <label for="lname">Content:</label><br>
+            <textarea id="content" cols="30" rows="10"></textarea><br><br>
+          </form> 
+          <button id="send">Send</button>
+          <script type="text/javascript">
+            $(document).ready(function(){
+                function getParameterByName(name, url = window.location.href) {
+                    name = name.replace(/[\[\]]/g, '\\$&');
+                    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                        results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+                }
+                var sender = getParameterByName("user");
+                $(document).on('click','#send', function(){
+                    var receiver = $('#receiver').val();
+                    var subject = $('#subject').val();
+                    var content = $('#content').val();
+                    console.log(receiver)
+        
+                    if(receiver != '' && subject != '' && content != ''){
+                        var data =  JSON.stringify({
+                            sender,
+                            receiver,
+                            subject,
+                            content
+                        })
+                        $.ajax({
+                        type: "POST",
+                        data: data,
+                        dataType: 'json',
+                        url: "http://localhost:1998/send"
+                    }).done( function(res) {
+                        var messages = res
+                        console.log(messages);
+                        if(messages.id){
+                            alert("Message sent!");
+                        }else{
+                            alert("ERR: Receiver does not exist! Try again!");
+                        }
+                    });
+                    }
+                });
+            });
+            </script>
+    </body>
+    
+
+</html>
