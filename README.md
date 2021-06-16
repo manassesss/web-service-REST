@@ -4,7 +4,7 @@ This repository contains a application using WebServices in REST model with the 
 - [x] Send Message 
 - [x] List messages 
 - [ ] Delete messages
-- [x] Open message 
+- [ ] Open message 
 - [ ] Forward message
 - [ ] Reply Message 
 
@@ -20,3 +20,13 @@ npm i
 ```
 
 It will install the dependencies you will need.
+
+## :rocket: Make it work!
+
+To use this application, acess the folder *pages*:
+```
+cd pages
+cd login
+```
+
+Acessa *index.html*
