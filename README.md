@@ -29,4 +29,4 @@ cd pages
 cd login
 ```
 
-Acessa *index.html*
+Acess *index.html*
